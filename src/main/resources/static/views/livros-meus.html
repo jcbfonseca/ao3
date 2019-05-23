@@ -1,0 +1,20 @@
+
+      <div class="container-fluid" style="padding-left: 10px">
+         <table id="resultsTbl" class="table table-striped">
+            <tbody>
+               <tr ng-repeat="item in bookResults">
+                  <form ng-show="visible">
+                  <td valign="center"><a ng-href="{{item.volumeInfo.infoLink}}" target="_blank">
+                     <img ng-src="{{item.imgLink}}" /></a></td>
+                  <td valign="center">{{item.title}}<br />
+                     By: {{item.authors}}<br />
+                  </td>
+                  <td valign="center">
+                      <button class="btn btn-primary" ng-click="detalhar(item)">Detalhar</button>
+                  </td>
+                    </form>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      
