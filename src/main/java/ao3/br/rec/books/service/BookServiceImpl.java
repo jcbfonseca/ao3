@@ -56,12 +56,6 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public List<BookDto> getAllBooks() {
-		System.out.println("BookServiceImpl.getAllBooks()");
-		return bookRepository.findAll().stream().map(BookConverter::entityToDto).collect(Collectors.toList());
-	}
-
-	@Override
 	public List<BookDto> getBooksByUserId(int userId) {
 		System.out.println("BookServiceImpl.getAllBooks()");
 		return bookRepository.getBooksByUserId(userId).stream().map(BookConverter::entityToDto).collect(Collectors.toList());

@@ -28,26 +28,7 @@ public class BookController {
 	@Autowired
 	BookService bookService;
 
-	@RequestMapping(value = Constants.GET_BOOK_BY_ID, method = RequestMethod.GET)
-	public BookDto getBookById(@PathVariable Integer bookId) {
-		return bookService.getBookById(bookId);
-	}
-
-	@RequestMapping(value = Constants.GET_ALL_BOOKS, method = RequestMethod.GET)
-	public List<BookDto> getAllBooks() {
-		return bookService.getAllBooks();
-	}
-
-	@RequestMapping(value = Constants.GET_ALL_BOOKS_BY_USER_ID, method = RequestMethod.GET)
-	public List<BookDto> getAllBooksByUserId() {
-		System.out.println("BookController.getAllBooksByUserId()");
-		
-		Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
-		List<BookDto> books = bookService.getBooksByUserId(((User)details).getUserId());
-		
-		return books;
-	}
-
+	//REST - POST
 	@RequestMapping(value = Constants.SAVE_BOOK, method = RequestMethod.POST)
 	public void saveBook(@RequestBody BookDto bookDto) {
 		System.out.println("---> BookController.saveBook()");
@@ -56,6 +37,7 @@ public class BookController {
 		bookService.saveBook(bookDto, (User)details);
 	}
 	
+	//REST - PATCH
 	@RequestMapping(value = Constants.SAVE_USER_BOOK, method = RequestMethod.PATCH, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public UserBookDTO saveUserBook(@PathVariable Integer book_id, @RequestBody String body) {
 		
@@ -82,6 +64,7 @@ public class BookController {
 		return bookService.saveUserBook(ubDto, (User)details);
 	}
 	
+	//REST - GET
 	@RequestMapping(value = Constants.GET_USER_BOOK, method = RequestMethod.GET)
 	public UserBookDTO getUserBook(@PathVariable Integer book_id) {
 		System.out.println("BookController.getUserBook()");
@@ -90,5 +73,19 @@ public class BookController {
 		
 		return bookService.getUserBook(book_id, (User)details);
 	}
+	
+	
+	//TODO - depois migrar para deixar correto de acordo com o padrao REST
+	@RequestMapping(value = Constants.GET_ALL_BOOKS_BY_USER_ID, method = RequestMethod.GET)
+	public List<BookDto> getAllBooksByUserId() {
+		System.out.println("BookController.getAllBooksByUserId()");
+		
+		Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
+		List<BookDto> books = bookService.getBooksByUserId(((User)details).getUserId());
+		
+		return books;
+	}
+
+	
 
 }

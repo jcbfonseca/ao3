@@ -18,7 +18,5 @@ public interface BookService {
 	
 	public UserBookDTO getUserBook(int bookId, User user);
 
-	public List<BookDto> getAllBooks();
-	
 	public List<BookDto> getBooksByUserId(int userId);
 }

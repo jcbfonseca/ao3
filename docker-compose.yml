@@ -1,13 +1,12 @@
 version: '3'
 
 services:
-  springboot-docker-compose-app-container:
-    image: ao3-v2-image:ao3-tag
+  server:
+    image: ao3-teste:v2
     build:
       context: ./
       dockerfile: Dockerfile
     volumes:
-      - /data/ao3-server
       - .:/code
     ports:
      - "8081:8080"

@@ -1,18 +1,12 @@
 var app = angular.module('myapp', ['ngResource','ngRoute']);
 
 app.constant("CONSTANTS", {
-	getUserByIdUrl : "/user/getUser/",
-	getAllUsers : "/user/getAllUsers",
-	saveUser : "/user/saveUser",
-	GET_ALL_USERS_BY_BOOK_ID: "/user/getAllUsersByBookId",
+	GET_ALL_USERS_BY_BOOK_ID: "/userbook/",//GET
+	GET_ALL_BOOKS_BY_USER_ID : "/book/booksByUserId",//GET
+	saveBook : "/book/",//POST
 	
-	getBookByIdUrl : "/book/getBook/",
-	getAllBooks : "/book/getAllBooks",
-	getAllBooksByUserId : "/book/getAllBooksByUserId",
-	saveBook : "/book/saveBook",
-	
-	SAVE_USER_BOOK: "/book/saveUserBook/",
-	GET_USER_BOOK: "/book/getUserBook/"
+	SAVE_USER_BOOK: "/book/userbook/",//PATCH
+	GET_USER_BOOK: "/book/userbook/"//GET
 });
 
 // Definindo Rotas
@@ -109,6 +103,7 @@ app.controller('DetailsController', function($scope, BookService1, UserBookServi
 });
 
 app.controller('BookListFromInternet', function ($scope, BookService,BookService1) {
+	$scope.itemRow="";
     $scope.filter = "";
     $scope.bookDto = {
             title: null,
@@ -132,15 +127,17 @@ app.controller('BookListFromInternet', function ($scope, BookService,BookService
       }
 
     $scope.saveBook=function(item){
-    	console.log('javascript-savebook()');
         var index=$scope.bookResults.indexOf(item)
+    	console.log('javascript-savebook() - index=' + index);
         $scope.bookDto.title=item.volumeInfo.title;
         $scope.bookDto.authors=item.volumeInfo.authors[0];
         $scope.bookDto.imgLink=item.volumeInfo.imageLinks.smallThumbnail;
+        
+        	
 
         BookService1.saveBookPost($scope.bookDto).then(function() {
-            console.log("SUCESSO");
-        	$scope.itemSaved="Salvo";
+            console.log("SUCESSO - " + index);
+        	$scope.itemRow="Salvo";
             $scope.bookDto = {
                 title: null,
                 authors: null
@@ -150,8 +147,7 @@ app.controller('BookListFromInternet', function ($scope, BookService,BookService
         }, function(value) {
             console.log("no callback");
         });
-        
-      }
+        }
     
 });
 
@@ -238,12 +234,8 @@ app.factory('BookService1', ["$http", "CONSTANTS", function($http, CONSTANTS) {
 	 }
 
 	
-    service.getBookById = function(bookId) {
-        var url = CONSTANTS.getBookByIdUrl + bookId;
-        return $http.get(url);
-    }
     service.getAllBooksByUserId = function() {
-        return $http.get(CONSTANTS.getAllBooksByUserId);
+        return $http.get(CONSTANTS.GET_ALL_BOOKS_BY_USER_ID);
     }
     service.saveBookPost = function(bookDto) {
         return $http.post(CONSTANTS.saveBook, bookDto);
@@ -257,7 +249,8 @@ app.factory('UserBookService', ["$http", "CONSTANTS", function($http, CONSTANTS)
 
      service.getAllUsersByBookId = function(book_id) {
 		 console.log('getAllUsersByBookId - ' + book_id);
-        return $http.get(CONSTANTS.GET_ALL_USERS_BY_BOOK_ID,book_id);
+         var url = CONSTANTS.GET_ALL_USERS_BY_BOOK_ID + book_id;
+        return $http.get(url);
      }
 	 service.saveUserBookPost = function(book_id, json) {
          var url = CONSTANTS.SAVE_USER_BOOK + book_id;
