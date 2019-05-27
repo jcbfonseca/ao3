@@ -28,6 +28,15 @@ public class BookController {
 	@Autowired
 	BookService bookService;
 
+	//REST - DELETE
+	@RequestMapping(value = Constants.DELETE_USER_BOOK, method = RequestMethod.DELETE)
+	public void deleteUserBook(@PathVariable Integer book_id) {
+		System.out.println("---> BookController.saveBook()");
+		
+		Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
+		bookService.deleteUserBook(((User)details).getUser_id(), book_id);
+	}
+	
 	//REST - POST
 	@RequestMapping(value = Constants.SAVE_BOOK, method = RequestMethod.POST)
 	public void saveBook(@RequestBody BookDto bookDto) {
@@ -40,6 +49,8 @@ public class BookController {
 	//REST - PATCH
 	@RequestMapping(value = Constants.SAVE_USER_BOOK, method = RequestMethod.PATCH, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public UserBookDTO saveUserBook(@PathVariable Integer book_id, @RequestBody String body) {
+		System.out.println("BookController.saveUserBook(" + book_id + ")");
+		System.out.println("Body = " + body) ;
 		
 		Object details = SecurityContextHolder.getContext().getAuthentication().getDetails();
 		
@@ -49,6 +60,21 @@ public class BookController {
 			ubDto.setStartDate(new Date());
 		} else if(body.contains("endDate")) {
 			ubDto.setEndDate(new Date());
+		} else if(body.contains("opinion")) {
+			System.out.println("Has Opinion tag");
+			try {
+				
+				ObjectMapper mapper = new ObjectMapper();
+				Map<String, String> map = mapper.readValue(body, Map.class);
+				String v = map.get("opinion");
+				System.out.println("Text = " + v);
+				ubDto.setOpinion(v);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new IllegalArgumentException(e.getMessage());
+			}
+			
 		}  else if(body.contains("star")) {
 			
 			try {

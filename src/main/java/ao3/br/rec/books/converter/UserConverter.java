@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import ao3.br.rec.books.dto.BookDto;
+import ao3.br.rec.books.dto.UserBookDTO;
 import ao3.br.rec.books.dto.UserDto;
 import ao3.br.rec.books.entity.User;
 import ao3.br.rec.books.entity.UserBook;
@@ -17,11 +18,11 @@ public class UserConverter {
 		
 		Set<UserBook> ubs = new HashSet<UserBook>();
 		
-		System.out.println(userDto.getBookDtos());
-		System.out.println(userDto.getBookDtos().size());
+		System.out.println(userDto.getUserBookDtos());
+		System.out.println(userDto.getUserBookDtos().size());
 		
-		for (BookDto b : userDto.getBookDtos()) {
-			ubs.add(new UserBook(user, BookConverter.dtoToEntity(b)));
+		for (UserBookDTO ub : userDto.getUserBookDtos()) {
+			ubs.add(UserBookConverter.dtoToEntity(ub));
 		}
 		user.setBooks(ubs);
 		return user;
@@ -29,11 +30,12 @@ public class UserConverter {
 
 	public static UserDto entityToDto(User user) {
 		UserDto userDto = new UserDto(user.getUserId(), user.getUserName(), null);
-		List<BookDto> booksDto = new ArrayList<BookDto>();
+		List<UserBookDTO> booksDto = new ArrayList<UserBookDTO>();
 		for (UserBook ub : user.getBooks()) {
-			booksDto.add(BookConverter.entityToDto(ub.getBook()));
+			booksDto.add(UserBookConverter.entityToDto(ub));
 		}
-		userDto.setBookDtos(booksDto);
+		
+		userDto.setUserBookDtos(booksDto);
 		
 		return userDto;
 	}

@@ -11,7 +11,7 @@ public class UserBookConverter {
 			ub.setBook(BookConverter.dtoToEntity(dto.getBook()));
 		}
 		if(dto.getUser() != null) {
-			ub.setUser(UserConverter.dtoToEntity(dto.getUser()));
+			//ub.setUser(UserConverter.dtoToEntity(dto.getUser()));
 		}
 		
 		ub.setEndDate(dto.getEndDate());
@@ -33,7 +33,7 @@ public class UserBookConverter {
 			dto.setBook(BookConverter.entityToDto(ub.getBook()));
 		}
 		if(ub.getUser() != null) {
-			dto.setUser(UserConverter.entityToDto(ub.getUser()));
+			//dto.setUser(UserConverter.entityToDto(ub.getUser()));
 		}
 		
 		dto.setEndDate(ub.getEndDate());

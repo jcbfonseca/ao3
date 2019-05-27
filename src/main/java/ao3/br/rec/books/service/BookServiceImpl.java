@@ -13,6 +13,7 @@ import ao3.br.rec.books.dto.UserBookDTO;
 import ao3.br.rec.books.entity.Book;
 import ao3.br.rec.books.entity.User;
 import ao3.br.rec.books.entity.UserBook;
+import ao3.br.rec.books.entity.UserBookPK;
 import ao3.br.rec.books.repository.BookRepository;
 import ao3.br.rec.books.repository.UserBookRepository;
 
@@ -76,6 +77,13 @@ public class BookServiceImpl implements BookService {
 		return UserBookConverter.entityToDto(ubValue);
 	}
 
+	@Override
+	public void deleteUserBook(int userId, int bookId) {
+		UserBook ub = new UserBook();
+		ub.setUser_id(userId);
+		ub.setBook_id(bookId);
+		this.userBookRepository.delete(ub);
+	}
 		
 	@Override
 	public UserBookDTO saveUserBook(UserBookDTO userBookDto, User user) {

@@ -1,22 +1,19 @@
 var app = angular.module('myapp', ['ngResource','ngRoute']);
 
 app.constant("CONSTANTS", {
-	GET_ALL_USERS_BY_BOOK_ID: "/userbook/",//GET
+	GET_ALL_USERS_BY_BOOK_ID: "/user/userbook/",//GET
 	GET_ALL_BOOKS_BY_USER_ID : "/book/booksByUserId",//GET
-	saveBook : "/book/",//POST
-	
+
+	SAVE_BOOK : "/book/",//POST
 	SAVE_USER_BOOK: "/book/userbook/",//PATCH
-	GET_USER_BOOK: "/book/userbook/"//GET
+	GET_USER_BOOK: "/book/userbook/",//GET
+	DELETE_USER_BOOK : "/book/userbook/",//DELETE
 });
 
 // Definindo Rotas
 app.config(function($routeProvider, $locationProvider) {
   
   $routeProvider
-  .when('/', {
-      templateUrl: 'home.html',
-      controller: 'HomeController'
-    })
   .when('/detalhar', {
       templateUrl: 'views/detalhar.html',
       controller: 'DetailsController'
@@ -71,6 +68,8 @@ app.controller('DetailsController', function($scope, BookService1, UserBookServi
     UserBookService.getAllUsersByBookId($scope.currentItem.id).then(function(value) {
         console.log("SUCESSO - getAllUsersByBookId");
     	$scope.userResults = value.data;
+    	console.log($scope.userResults[0])
+    	console.log($scope.userResults[0].userBookDtos[0].star)
 
     }, function(reason) {
         console.log("error occured");
@@ -83,6 +82,12 @@ app.controller('DetailsController', function($scope, BookService1, UserBookServi
     console.log($scope.userBookDto.startDate);
     $scope.updateStar = function () {
     	var json = "{\"star\": " + $scope.userBookDto.star + "}";
+    	UserBookService.saveUserBookPost($scope.userBookDto.book_id, json);
+    }
+    
+    $scope.updateOpinion = function () {
+    	console.log('updateOpinion - ' + $scope.userBookDto.opinion);
+    	var json = "{\"opinion\": \"" + $scope.userBookDto.opinion + "\"}";
     	UserBookService.saveUserBookPost($scope.userBookDto.book_id, json);
     }
     
@@ -103,7 +108,7 @@ app.controller('DetailsController', function($scope, BookService1, UserBookServi
 });
 
 app.controller('BookListFromInternet', function ($scope, BookService,BookService1) {
-	$scope.itemRow="";
+    $scope.saveData= {};
     $scope.filter = "";
     $scope.bookDto = {
             title: null,
@@ -111,20 +116,23 @@ app.controller('BookListFromInternet', function ($scope, BookService,BookService
             imgLink: null
     };
     
+    
     $scope.doSearch = function () {
     	if($scope.filter.length === 0){
             $scope.filterMsg = "Digite uma palavra no campo Filtro.";
          }else{
             $scope.filterMsg = "";
             BookService.get({ q: $scope.filter }, function (response) {
+                $scope.saveData= {};
+                $scope.filter = "";
                 $scope.bookResults = response.items;
             });
          }    	
     }
-    $scope.remove=function(item){ 
-        var index=$scope.bookResults.indexOf(item)
-        $scope.bookResults.splice(index,1);     
-      }
+//    $scope.remove=function(item){ 
+//        var index=$scope.bookResults.indexOf(item)
+//        $scope.bookResults.splice(index,1);     
+//      }
 
     $scope.saveBook=function(item){
         var index=$scope.bookResults.indexOf(item)
@@ -137,12 +145,13 @@ app.controller('BookListFromInternet', function ($scope, BookService,BookService
 
         BookService1.saveBookPost($scope.bookDto).then(function() {
             console.log("SUCESSO - " + index);
-        	$scope.itemRow="Salvo";
+        	$scope.saveData[index]="Salvo";
             $scope.bookDto = {
                 title: null,
                 authors: null
             };
         }, function(reason) {
+        	$scope.saveData[index]="Erro";
             console.log("error occured");
         }, function(value) {
             console.log("no callback");
@@ -152,10 +161,13 @@ app.controller('BookListFromInternet', function ($scope, BookService,BookService
 });
 
 app.controller('MeusLivrosController', function ($scope, $location, BookService1) {
+        $scope.saveData= {};
+        
         BookService1.getAllBooksByUserId().then(function(value) {
         	console.log(value.data);
         	$scope.bookResults = value.data;
         }, function(reason) {
+        	$scope.saveData[index]="Erro";
             console.log("error occured");
         }, function(value) {
             console.log("no callback");
@@ -167,8 +179,15 @@ app.controller('MeusLivrosController', function ($scope, $location, BookService1
 	    }
 	    
 	    $scope.remove=function(item){ 
-	        var index=$scope.bookResults.indexOf(item)
-	        $scope.bookResults.splice(index,1);     
+	        var index=$scope.bookResults.indexOf(item);
+	        console.log("delete - " + index + " and Id=" + $scope.bookResults[index].book_id);
+	    	BookService1.deleteUserBook($scope.bookResults[index].id).then(function() {
+		        $scope.bookResults.splice(index,1);     
+	        }, function(reason) {
+	            console.log("error occured");
+	        }, function(value) {
+	            console.log("no callback");
+	        });
 	      }
 	});
 
@@ -238,7 +257,12 @@ app.factory('BookService1', ["$http", "CONSTANTS", function($http, CONSTANTS) {
         return $http.get(CONSTANTS.GET_ALL_BOOKS_BY_USER_ID);
     }
     service.saveBookPost = function(bookDto) {
-        return $http.post(CONSTANTS.saveBook, bookDto);
+        return $http.post(CONSTANTS.SAVE_BOOK, bookDto);
+    }
+    service.deleteUserBook = function(book_id) {
+		 console.log('Service - deleteUserBook - ' + book_id);
+    	var url = CONSTANTS.DELETE_USER_BOOK + book_id;
+        return $http.delete(url);
     }
     return service;
 }]);

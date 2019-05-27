@@ -31,16 +31,12 @@ public class AuthProviderService implements AuthenticationProvider {
 		String login = auth.getName();
 		String senha = auth.getCredentials().toString();
 
-		System.out.println("Login = " + login);
-		System.out.println("Senha = " + senha);
-		
 		User userOK = null;
 		List<User> users = userService.getAllUsers();
 		
 		//Autenticacao FAKE - apenas para validar o fluxo do sistema de autenticacao
 		//Spring security
 		for (User u : users) {
-			System.out.println(u.getUserName()+"/" + u.getPassword());
 			if(u.getUserName().equalsIgnoreCase(login) && u.getPassword().equals(senha)) {
 				userOK = new User();
 				userOK.setPassword(senha);

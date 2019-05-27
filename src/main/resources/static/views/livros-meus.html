@@ -10,7 +10,9 @@
                      By: {{item.authors}}<br />
                   </td>
                   <td valign="center">
+                      <div>{{saveData[$index]}}</div>
                       <button class="btn btn-primary" ng-click="detalhar(item)">Detalhar</button>
+                      <button class="btn btn-primary" ng-click="remove(item)">Remover</button>
                   </td>
                     </form>
                </tr>

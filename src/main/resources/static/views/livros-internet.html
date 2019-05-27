@@ -16,7 +16,7 @@
                </tr>
             </thead>
             <tbody>
-               <tr ng-repeat="item in bookResults">
+               <tr ng-repeat="item in bookResults" ng-if="item.volumeInfo.imageLinks.smallThumbnail!=null">
                   <form ng-show="visible">
                   <td valign="center"><a ng-href="{{item.volumeInfo.infoLink}}" target="_blank"><img ng-src=
                      "{{item.volumeInfo.imageLinks.smallThumbnail}}" /></a></td>
@@ -26,13 +26,15 @@
                      dateFilter}}
                   </td>
                   <td valign="center">
-                      <div>{{itemRow}}</div>
+                      <div>{{saveData[$index]}}</div>
                       <button class="btn btn-primary" ng-click="saveBook(item)">Quero Ler</button>
-                      <button class="btn btn-primary" ng-click="remove(item)">Remover</button>
+<!--                       <button class="btn btn-primary" ng-click="remove(item)">Remover da Lista</button> -->
             
                   </td>
                     </form>
                </tr>
+
+
             </tbody>
          </table>
       </div>

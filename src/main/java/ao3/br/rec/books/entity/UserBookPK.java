@@ -21,6 +21,11 @@ public class UserBookPK implements Serializable {
 
 	}
 
+	public UserBookPK(int userId, int bookId) {
+		this.user_id = userId;
+		this.book_id = bookId;
+	}
+
 	public int getUser_id() {
 		return user_id;
 	}

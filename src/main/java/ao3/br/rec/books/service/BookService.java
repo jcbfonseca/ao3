@@ -13,6 +13,9 @@ public interface BookService {
 	public BookDto getBookById(Integer bookId);
 
 	public void saveBook(BookDto bookDto, User user);
+	
+	public void deleteUserBook(int userId, int bookdId);
+
 
 	public UserBookDTO saveUserBook(UserBookDTO userBookDto, User user);
 	

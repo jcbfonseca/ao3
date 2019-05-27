@@ -6,11 +6,11 @@ import java.util.List;
 public class UserDto {
     Integer userId;
     String userName;
-    List<BookDto> bookDtos= new ArrayList<>();
-    public UserDto(Integer userId, String userName, List<BookDto> bookDtos) {
+    List<UserBookDTO> userBookDtos= new ArrayList<>();
+    public UserDto(Integer userId, String userName, List<UserBookDTO> bookDtos) {
         this.userId = userId;
         this.userName = userName;
-        this.bookDtos = bookDtos;
+        this.userBookDtos = bookDtos;
     }
     public UserDto() {
     }
@@ -26,10 +26,10 @@ public class UserDto {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    public List<BookDto> getBookDtos() {
-        return bookDtos;
+    public List<UserBookDTO> getUserBookDtos() {
+        return userBookDtos;
     }
-    public void setBookDtos(List<BookDto> bookDtos) {
-        this.bookDtos = bookDtos;
+    public void setUserBookDtos(List<UserBookDTO> bookDtos) {
+        this.userBookDtos = bookDtos;
     }
 }

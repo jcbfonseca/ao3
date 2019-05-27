@@ -1,5 +1,6 @@
 package ao3.br.rec.books.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import ao3.br.rec.books.converter.BookConverter;
-import ao3.br.rec.books.converter.UserBookConverter;
 import ao3.br.rec.books.converter.UserConverter;
 import ao3.br.rec.books.dto.UserDto;
 import ao3.br.rec.books.entity.User;
@@ -46,8 +45,22 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findAll();
 	}
 	public List<UserDto> getUsersByBookId(int bookId) {
+//		List<User> users = userRepository.getUsersByBookId(bookId).stream().map(UserConverter::entityToDto).collect(Collectors.toList());
 		System.out.println("UserServiceImpl.getUsersByBookId()");
-		return userRepository.getUsersByBookId(bookId).stream().map(UserConverter::entityToDto).collect(Collectors.toList());
+		List<User> users = userRepository.getUsersByBookId(bookId);
+		for (User user : users) {
+			System.out.println(user.getBooks());
+			List<UserBook> ubs = new ArrayList<UserBook>(user.getBooks());
+			if(ubs != null) {
+				for (UserBook ub : ubs) {
+					System.out.println(ub.getUser().getUserName());
+					System.out.println(ub.getBook().getTitle());
+					System.out.println(ub.getStar());
+				}
+			}
+		}
+		
+		return users.stream().map(UserConverter::entityToDto).collect(Collectors.toList());
 		
 	}
 
