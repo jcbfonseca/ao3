@@ -1,12 +1,30 @@
 version: '3'
 
 services:
-  server:
-    image: ao3-teste:v2
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    volumes:
-      - .:/code
+  client: 
+    image: jcbfonseca/ao3-client:v1
     ports:
-     - "8081:8080"
+      - "80:80"
+    links:
+      - server
+    networks:
+      - lognet
+    volumes:
+      - pages:/usr/share/nginx/html
+
+  server: 
+    image: jcbfonseca/ao3-server:v1
+    ports:
+      - "8081:8080"
+    command: java -jar HelloSpring-0.0.1-SNAPSHOT.jar
+    networks:
+      - lognet
+    volumes:
+      - pages:/usr/share/nginx/html
+
+networks:
+  lognet:
+    driver: bridge
+
+volumes:
+  pages:
