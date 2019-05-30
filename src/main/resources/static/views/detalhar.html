@@ -1,0 +1,72 @@
+
+<div class="container">
+  <h1 class="my-3">{{currentItem.title}}
+    <br><small>({{currentItem.authors}})</small>
+  </h1>
+
+
+    <div class="col-md-4">
+<!-- 
+	<div id="myProgress">
+	<form>
+	  <div id="myBar"><center>Jorge</center></div>
+	  <input type="button" name="bar" onClick="javascript:moveProgressBarInc()">Click Me</button> 
+
+    </form>
+ 	</div>
+ -->
+ 	<div>
+      <img class="img.gallery" src="{{currentItem.imgLink}}" alt="">
+    </div>
+    </div>
+
+    <div class="col-md-4">
+      <h3 class="my-3">Detalhes do seu livro</h3>
+      <ul>
+        <li ng-if="userBookDto.startDate != null"><strong>Inicio Leitura:</strong> {{userBookDto.startDate | date:'dd/MM/yyyy'}}<br>  {{userBookDto.startDate | date:'HH:mm:ss'}}</li>
+        <li ng-if="userBookDto.startDate == null"><a href="" ng-click="updateStartDate()"><strong>iniciar Leitura</strong></a></li>
+        <li ng-if="userBookDto.startDate != null && userBookDto.endDate != null"><strong>Fim Leitura:</strong> {{userBookDto.endDate | date:'dd/MM/yyyy'}}<br>  {{userBookDto.endDate | date:'HH:mm:ss'}}</li>
+        <li ng-if="userBookDto.startDate != null && userBookDto.endDate == null"><a href="" ng-click="updateEndDate()"><strong>Finalizar Leitura</strong></a></li>
+        
+       <br>
+        <li ng-if="userBookDto.startDate != null"><strong>Sua Nota</strong>
+		<div class="rating" >
+		    <input type="radio" name="rating" value="0" ng-model="userBookDto.star" /><span id="hide"></span>
+		    <input type="radio" name="rating" value="1" ng-model="userBookDto.star" ng-click="updateStar()" /><span></span>
+		    <input type="radio" name="rating" value="2" ng-model="userBookDto.star" ng-click="updateStar()" /><span></span>
+		    <input type="radio" name="rating" value="3" ng-model="userBookDto.star" ng-click="updateStar()" /><span></span>
+		    <input type="radio" name="rating" value="4" ng-model="userBookDto.star" ng-click="updateStar()" /><span></span>
+		    <input type="radio" name="rating" value="5" ng-model="userBookDto.star" ng-click="updateStar()" /><span></span>
+		</div>
+		</li>
+      </ul>
+    </div>
+
+    <div class="col-md-4" ng-if="userBookDto.startDate != null">
+      <h3 class="my-3">Sua Opinião</h3>
+      <textarea rows="7" cols="30" ng-model="userBookDto.opinion">}</textarea>
+      <button class="btn btn-primary" ng-click="updateOpinion()">Salvar Opinião</button>
+    </div>
+
+  </div>
+  <!-- /.row -->
+
+</div>
+<br>
+      <div class="container-fluid" style="padding-left: 10px" >
+         <table id="resultsTbl1">
+            <tbody>
+               <tr>
+                  <td >Amigos que ja leram: </td>
+                  <td align="left">
+                   <div ng-repeat="user in userResults">
+                     <span>{{user.userName}}: nota: {{user.userBookDtos[0].star}}, opinião: {{user.userBookDtos[0].opinion}}</span>
+                   </div>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+
+
+<!-- /.container -->

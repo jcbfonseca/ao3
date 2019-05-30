@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciador de Livros - AO3</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/app/style.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.angularjs.org/1.2.1/angular-resource.js"></script>
+  <script src="js/app/script.js">
+</script>
+
+ <base href="/">
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand">Gerenciador de Livros</a>
+      </div>
+      <div>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/meusLivros">Meus Livros</a></li>
+          <li><a href="/internetLivros">Buscar Livros</a></li>
+          <li><a href="/contato">Contato</a></li>
+          <li><a href="/logout" target="_self">Sair</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <ng-view></ng-view>
+
+  <br><br><br>
+  <div><center>@copyright ao3 digital</center></div>
+  
+</body>
+</html>
